@@ -1,7 +1,7 @@
 {
   "name": "react-native-toast-signal",
   "version": "0.1.0",
-  "description": "any",
+  "description": "A zero-config, safe-area aware flash message system for React Native powered by Reanimated 4",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {
@@ -79,13 +79,21 @@
     "react": "19.2.0",
     "react-native": "0.83.2",
     "react-native-builder-bob": "^0.40.13",
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-worklets": "0.5.1",
     "release-it": "^19.0.4",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-gesture-handler": ">=2.28.0",
+    "react-native-reanimated": ">=4.1.1",
+    "react-native-safe-area-context": ">=5.6.0",
+    "react-native-worklets": ">=0.5.1"
   },
   "workspaces": [
     "example"
