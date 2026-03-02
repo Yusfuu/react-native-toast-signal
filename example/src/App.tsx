@@ -8,7 +8,7 @@ export default function App() {
 
   const { show } = useSignal();
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.gesture}>
       <SafeAreaProvider>
         <SignalProvider maxVisible={3}>
           <View style={styles.container}>
@@ -35,5 +35,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  gesture: {
+    flex: 1,
   },
 });

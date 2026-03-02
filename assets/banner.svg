@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d0d1a"/>
+      <stop offset="60%" style="stop-color:#111122"/>
+      <stop offset="100%" style="stop-color:#0a0a18"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#4ade80"/>
+    </linearGradient>
+    <linearGradient id="wordmark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#9090b0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="banner-clip">
+      <rect width="1200" height="400"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#banner-clip)">
+    <rect width="1200" height="400" fill="url(#bg)"/>
+
+    <!-- Dot grid -->
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="white" opacity="0.05"/>
+    </pattern>
+    <rect width="1200" height="400" fill="url(#dots)"/>
+
+    <!-- Glow orbs -->
+    <ellipse cx="600" cy="200" rx="420" ry="180" fill="#22c55e" opacity="0.04" filter="url(#glow)"/>
+    <ellipse cx="180" cy="340" rx="200" ry="120" fill="#6366f1" opacity="0.04"/>
+    <ellipse cx="1020" cy="70" rx="220" ry="140" fill="#3b82f6" opacity="0.04"/>
+
+    <!-- Bell icon mark centered above title -->
+    <g transform="translate(572, 58)">
+      <!-- Bell shape -->
+      <path d="M28 8 C28 8 16 10 16 24 L16 32 L10 32 L10 35 L46 35 L46 32 L40 32 L40 24 C40 10 28 8 28 8 Z" fill="none" stroke="#22c55e" stroke-width="2.2" stroke-linejoin="round"/>
+      <!-- Bell top dot -->
+      <circle cx="28" cy="7" r="3" fill="#22c55e"/>
+      <!-- Bell clapper -->
+      <path d="M23 35 C23 38 33 38 33 35" fill="none" stroke="#22c55e" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- Notification dot -->
+      <circle cx="40" cy="12" r="6" fill="#ef4444"/>
+      <text x="40" y="16" text-anchor="middle" font-family="system-ui" font-size="7" font-weight="800" fill="white">3</text>
+    </g>
+
+    <!-- Main title -->
+    <text
+      x="600" y="178"
+      text-anchor="middle"
+      font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+      font-size="56"
+      font-weight="800"
+      letter-spacing="-1.5"
+      fill="url(#wordmark)"
+    >React Native Toast Signal</text>
+
+    <!-- Tagline -->
+    <text
+      x="600" y="218"
+      text-anchor="middle"
+      font-family="'SF Pro Text', -apple-system, system-ui, sans-serif"
+      font-size="17"
+      fill="#ffffff45"
+      letter-spacing="0.3"
+    >Smooth · Stackable · Swipeable toasts for React Native</text>
+
+    <!-- Divider -->
+    <line x1="440" y1="244" x2="760" y2="244" stroke="#ffffff12" stroke-width="1"/>
+
+    <!-- Feature pills -->
+    <g transform="translate(600, 266)">
+      <rect x="-298" y="0" width="118" height="26" rx="13" fill="#6366f118" stroke="#6366f138" stroke-width="1"/>
+      <text x="-239" y="17" text-anchor="middle" font-family="'SF Mono', monospace" font-size="11" font-weight="500" fill="#a5b4fc">Reanimated v4</text>
+
+      <rect x="-166" y="0" width="124" height="26" rx="13" fill="#0ea5e918" stroke="#0ea5e938" stroke-width="1"/>
+      <text x="-104" y="17" text-anchor="middle" font-family="'SF Mono', monospace" font-size="11" font-weight="500" fill="#7dd3fc">Gesture Handler</text>
+
+      <rect x="-28" y="0" width="92" height="26" rx="13" fill="#3b82f618" stroke="#3b82f638" stroke-width="1"/>
+      <text x="18" y="17" text-anchor="middle" font-family="'SF Mono', monospace" font-size="11" font-weight="500" fill="#93c5fd">TypeScript</text>
+
+      <rect x="78" y="0" width="102" height="26" rx="13" fill="#f59e0b18" stroke="#f59e0b38" stroke-width="1"/>
+      <text x="129" y="17" text-anchor="middle" font-family="'SF Mono', monospace" font-size="11" font-weight="500" fill="#fcd34d">Safe Area</text>
+
+      <rect x="194" y="0" width="80" height="26" rx="13" fill="#ec489918" stroke="#ec489938" stroke-width="1"/>
+      <text x="234" y="17" text-anchor="middle" font-family="'SF Mono', monospace" font-size="11" font-weight="500" fill="#f9a8d4">Haptics</text>
+    </g>
+
+    <!-- Bottom accent line -->
+    <rect x="0" y="395" width="1200" height="5" fill="url(#green)" opacity="0.18"/>
+  </g>
+</svg>

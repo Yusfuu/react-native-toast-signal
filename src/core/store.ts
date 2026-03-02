@@ -44,7 +44,6 @@ class SignalStore {
       swipeToDismiss: !isLoading, // loading toasts shouldn't be accidentally swiped away
       autoHide: !isLoading, // loading toasts stay until manually dismissed
       duration: this.defaultDuration,
-      haptic: true,
       ...options,
       id,
       createdAt: now,
@@ -129,7 +128,7 @@ class SignalStore {
       Omit<SignalOptions, 'type' | 'autoHide' | 'swipeToDismiss'>
     >
   ): Promise<T> {
-    const id = this.loading(messages.loading, { ...options, haptic: false });
+    const id = this.loading(messages.loading, { ...options });
 
     promise
       .then((data) => {
@@ -142,7 +141,7 @@ class SignalStore {
           description,
           autoHide: true,
           swipeToDismiss: true,
-          haptic: options?.haptic ?? true,
+
           duration: options?.duration ?? this.defaultDuration,
         });
       })
@@ -156,7 +155,7 @@ class SignalStore {
           description,
           autoHide: true,
           swipeToDismiss: true,
-          haptic: options?.haptic ?? true,
+
           duration: options?.duration ?? this.defaultDuration,
         });
       });

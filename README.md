@@ -1,54 +1,66 @@
-# react-native-signal
+<p align="center">
+  <img src="./assets/banner.svg" alt="react-native-toast-signal banner" width="100%"/>
+</p>
 
-A lightweight, fully-animated, accessible toast/notification library for React Native built on **Reanimated v4**, **Gesture Handler**, and **Safe Area Context**.
+<p align="center">
+  <img src="https://img.shields.io/npm/v/react-native-toast-signal?style=flat-square&color=22c55e&labelColor=0d0d1a&label=npm" alt="npm version"/>
+  <img src="https://img.shields.io/npm/dm/react-native-toast-signal?style=flat-square&color=3b82f6&labelColor=0d0d1a" alt="downloads"/>
+  <img src="https://img.shields.io/badge/Reanimated-v4-8b5cf6?style=flat-square&labelColor=0d0d1a" alt="reanimated v4"/>
+  <img src="https://img.shields.io/badge/TypeScript-strict-3b82f6?style=flat-square&labelColor=0d0d1a" alt="typescript"/>
+  <img src="https://img.shields.io/badge/license-MIT-f59e0b?style=flat-square&labelColor=0d0d1a" alt="license"/>
+</p>
 
----
+<br/>
 
-## Features
+**react-native-toast-signal** is a smooth, stackable, fully typed toast notification library for React Native — built on [Reanimated v4](https://docs.swmansion.com/react-native-reanimated/) and [Gesture Handler v2](https://docs.swmansion.com/react-native-gesture-handler/).
 
-- 🎨 **4 built-in types** — `success`, `error`, `warning`, `info` with per-type theming
-- 📚 **Stack support** — multiple toasts stack and scale elegantly
-- 👆 **Swipe to dismiss** — horizontal pan gesture with spring physics
-- 🔛 **Top & bottom** — independent stacks per position
-- ♿ **Accessible** — `accessibilityRole="alert"`, live regions, `announceForAccessibility`
-- ⏱ **Auto-dismiss** — configurable per-toast or globally
-- 🎛 **Imperative API** — `Signal.show()` / `Signal.success()` callable outside React
-- 🔁 **Update in place** — mutate a toast's message/type after showing it
-- 🪝 **Hook API** — `useSignal()` for in-component usage
+- 🎞 **Fluid animations** — slide-in/out, stacked scale + opacity, progress bar
+- 👆 **Swipe-to-dismiss** with flick velocity detection
+- 📚 **Queue-aware stacking** — beyond `maxVisible` toasts are mounted but hidden, animating in seamlessly when a slot opens
+- 🔔 **6 types** — `success` `error` `warning` `info` `loading` `custom`
+- ⚡ **Loading toasts** — update in-place to success/error with a pulse animation
+- 🎯 **Action buttons** — optional CTA rendered inside the toast
+- ♿ **Accessible** — `accessibilityRole`, `accessibilityLiveRegion`, and `AccessibilityInfo` announcements
+- 📍 **Position** — `top` or `bottom` per toast, with safe area clamping
+- 🎨 **Fully themeable** per type
 
 ---
 
 ## Installation
 
 ```sh
-npm install react-native-signal
-# or
-yarn add react-native-signal
+npm install react-native-toast-signal
 ```
 
 ### Peer dependencies
 
+Install if not already in your project:
+
 ```sh
-npm install react-native-reanimated react-native-gesture-handler react-native-safe-area-context
+npm install react-native-reanimated react-native-worklets react-native-gesture-handler react-native-safe-area-context
 ```
 
-Follow the setup guides for each peer dependency:
+> **Reanimated v4 requires the New Architecture.** Make sure it's enabled in your project.
 
-- [Reanimated v4](https://docs.swmansion.com/react-native-reanimated/)
-- [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/installation)
-- [Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context#getting-started)
+### babel.config.js
 
----
+```js
+module.exports = {
+  presets: ['module:@react-native/babel-preset'],
+  plugins: [
+    'react-native-worklets/plugin', // required for Reanimated v4
+  ],
+};
+```
 
-## Quick start
+## Setup
 
-### 1. Wrap your app
+Wrap your app root with the required providers **in this exact order**:
 
 ```tsx
-// App.tsx
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { SignalProvider } from 'react-native-signal';
+import { SignalProvider } from 'react-native-toast-signal';
 
 export default function App() {
   return (
@@ -63,244 +75,279 @@ export default function App() {
 }
 ```
 
-### 2. Show a toast
+---
 
-#### Hook (inside components)
+## Usage
+
+### Imperative API
+
+```ts
+import { Signal } from 'react-native-toast-signal';
+
+// Simple
+Signal.show({ description: 'Profile saved.' });
+
+// With title and type
+Signal.show({
+  type: 'success',
+  title: 'Changes saved',
+  description: 'Your profile has been updated successfully.',
+});
+
+// Error
+Signal.show({
+  type: 'error',
+  title: 'Upload failed',
+  description: 'Check your connection and try again.',
+});
+
+// Warning
+Signal.show({
+  type: 'warning',
+  description: 'Your session expires in 5 minutes.',
+});
+
+// Info — bottom position
+Signal.show({
+  type: 'info',
+  description: 'New update available.',
+  position: 'bottom',
+});
+
+// Dismiss a specific toast
+Signal.hide('my-toast-id');
+
+// Dismiss all
+Signal.clear();
+```
+
+### Hook API
 
 ```tsx
-import { useSignal } from 'react-native-signal';
+import { useSignal } from 'react-native-toast-signal';
 
-function ProfileScreen() {
-  const { success, error } = useSignal();
+function MyComponent() {
+  const { show, hide, clear } = useSignal();
 
-  const save = async () => {
-    try {
-      await api.saveProfile();
-      success('Profile saved!');
-    } catch {
-      error('Save failed', { title: 'Oops' });
-    }
-  };
-
-  return <Button onPress={save} title="Save" />;
+  return (
+    <Button
+      title="Save"
+      onPress={() =>
+        show({
+          type: 'success',
+          title: 'Saved',
+          description: 'All changes have been saved.',
+        })
+      }
+    />
+  );
 }
 ```
 
-#### Imperative (outside components — API calls, global error handlers, etc.)
+---
+
+## Loading Toasts
+
+Show a loading toast, then update it in-place to success or error — no flash, just a smooth pulse transition:
 
 ```ts
-import { Signal } from 'react-native-signal';
+Signal.show({
+  id: 'upload',
+  type: 'loading',
+  description: 'Uploading file…',
+  autoHide: false, // stays until you call update
+});
 
-// In an Axios interceptor, Redux middleware, etc.
-Signal.error('Session expired. Please log in again.', {
-  title: 'Auth error',
-  duration: 5000,
-  position: 'bottom',
+try {
+  await uploadFile();
+  Signal.update('upload', {
+    type: 'success',
+    description: 'File uploaded!',
+    autoHide: true,
+  });
+} catch {
+  Signal.update('upload', {
+    type: 'error',
+    description: 'Upload failed. Try again.',
+    autoHide: true,
+  });
+}
+```
+
+---
+
+## Action Buttons
+
+Render a CTA inside the toast. The `onPress` callback receives a `dismiss` function so you control whether the toast closes:
+
+```ts
+Signal.show({
+  type: 'warning',
+  title: 'Unsaved changes',
+  description: 'You have unsaved changes. Discard them?',
+  autoHide: false,
+  action: {
+    label: 'Discard',
+    onPress: (dismiss) => {
+      discardChanges();
+      dismiss();
+    },
+  },
 });
 ```
 
 ---
 
-## API
+## onPress
 
-### `<SignalProvider />`
-
-Wrap your root component. Must be a descendant of `SafeAreaProvider` and `GestureHandlerRootView`.
-
-| Prop              | Type                   | Default | Description                                   |
-| ----------------- | ---------------------- | ------- | --------------------------------------------- |
-| `maxVisible`      | `number`               | `3`     | Max number of toasts shown simultaneously     |
-| `defaultDuration` | `number`               | `3000`  | Default auto-dismiss time in ms               |
-| `theme`           | `Partial<SignalTheme>` | —       | Override colors per signal type (see Theming) |
-
----
-
-### `useSignal()`
-
-Returns an object with the following methods. All `show*` methods return the toast `id` (string).
+The `onPress` callback also receives a `dismiss` function:
 
 ```ts
-const { show, success, error, warning, info, hide, update, clear } =
-  useSignal();
-```
-
-| Method                       | Description                                |
-| ---------------------------- | ------------------------------------------ |
-| `show(options)`              | Show a toast with full options             |
-| `success(message, options?)` | Show a success toast                       |
-| `error(message, options?)`   | Show an error toast                        |
-| `warning(message, options?)` | Show a warning toast                       |
-| `info(message, options?)`    | Show an info toast                         |
-| `hide(id)`                   | Dismiss a specific toast by id             |
-| `update(id, options)`        | Update a visible toast's message/type/etc. |
-| `clear()`                    | Dismiss all toasts immediately             |
-
----
-
-### `Signal` (imperative singleton)
-
-Same methods as the hook but callable anywhere:
-
-```ts
-import { Signal } from 'react-native-signal';
-
-const id = Signal.show({ message: 'Loading…', autoHide: false });
-await doWork();
-Signal.update(id, { message: 'Done!', type: 'success' });
-Signal.hide(id);
+Signal.show({
+  type: 'info',
+  description: 'New message from Alex.',
+  onPress: (dismiss) => {
+    navigation.navigate('Chat');
+    dismiss();
+  },
+});
 ```
 
 ---
+
+## Callbacks
+
+```ts
+Signal.show({
+  description: 'Processing complete.',
+  onShow: () => console.log('Toast entered'),
+  onHide: () => console.log('Toast exited'),
+});
+```
+
+| Callback  | When it fires                        |
+| --------- | ------------------------------------ |
+| `onShow`  | After entry animation fully settles  |
+| `onHide`  | After exit animation fully completes |
+| `onPress` | When the toast body is tapped        |
+
+---
+
+## Custom Icon
+
+Override the default type icon with any `ReactNode`:
+
+```tsx
+import { MyIcon } from './icons';
+
+Signal.show({
+  type: 'custom',
+  description: 'Custom icon toast.',
+  icon: <MyIcon size={16} color="#a78bfa" />,
+});
+```
+
+---
+
+## API Reference
+
+### `Signal`
+
+| Method                       | Description                     |
+| ---------------------------- | ------------------------------- |
+| `Signal.show(options)`       | Show a new toast                |
+| `Signal.hide(id)`            | Dismiss a specific toast by ID  |
+| `Signal.update(id, options)` | Update a visible toast in-place |
+| `Signal.clear()`             | Dismiss all toasts              |
 
 ### `SignalOptions`
 
-| Property    | Type                                          | Default        | Description                            |
-| ----------- | --------------------------------------------- | -------------- | -------------------------------------- |
-| `message`   | `string`                                      | **required**   | Main toast text                        |
-| `id`        | `string`                                      | auto-generated | Deduplication key                      |
-| `title`     | `string`                                      | —              | Bold heading above message             |
-| `type`      | `'success' \| 'error' \| 'warning' \| 'info'` | `'info'`       | Visual style and icon                  |
-| `position`  | `'top' \| 'bottom'`                           | `'top'`        | Which edge of the screen               |
-| `duration`  | `number`                                      | `3000`         | Auto-dismiss delay in ms               |
-| `autoHide`  | `boolean`                                     | `true`         | Set `false` to require manual dismiss  |
-| `swipeable` | `boolean`                                     | `true`         | Allow horizontal swipe-to-dismiss      |
-| `onShow`    | `() => void`                                  | —              | Called after entry animation completes |
-| `onHide`    | `() => void`                                  | —              | Called after exit animation completes  |
-| `onPress`   | `(dismiss: () => void) => void`               | —              | Called when toast is tapped            |
+| Prop             | Type                            | Default  | Description                                                                    |
+| ---------------- | ------------------------------- | -------- | ------------------------------------------------------------------------------ |
+| `description`    | `string`                        | —        | **Required.** Body text                                                        |
+| `title`          | `string`                        | —        | Optional bold heading                                                          |
+| `id`             | `string`                        | auto     | Stable ID for deduplication / update / hide                                    |
+| `type`           | `SignalType`                    | `'info'` | Visual style: `success` `error` `warning` `info` `loading` `custom`            |
+| `position`       | `'top' \| 'bottom'`             | `'top'`  | Screen position                                                                |
+| `duration`       | `number`                        | `3000`   | Auto-dismiss delay in ms                                                       |
+| `autoHide`       | `boolean`                       | `true`   | Disable to keep toast until manually dismissed (`loading` defaults to `false`) |
+| `swipeToDismiss` | `boolean`                       | `true`   | Enable or disable swipe gesture                                                |
+| `action`         | `SignalAction`                  | —        | Optional CTA button with label and onPress                                     |
+| `icon`           | `ReactNode`                     | —        | Custom icon — replaces the default type icon                                   |
+| `onShow`         | `() => void`                    | —        | Called after entry animation settles                                           |
+| `onHide`         | `() => void`                    | —        | Called after exit animation completes                                          |
+| `onPress`        | `(dismiss: () => void) => void` | —        | Called when toast body is tapped                                               |
+
+### `SignalProvider` props
+
+| Prop              | Type     | Default | Description                           |
+| ----------------- | -------- | ------- | ------------------------------------- |
+| `maxVisible`      | `number` | `3`     | Max toasts shown in the stack at once |
+| `defaultDuration` | `number` | `3000`  | Global default auto-dismiss duration  |
+
+```tsx
+<SignalProvider maxVisible={5} defaultDuration={4000}>
+  <App />
+</SignalProvider>
+```
+
+### `SignalAction`
+
+```ts
+interface SignalAction {
+  label: string;
+  onPress: (dismiss: () => void) => void;
+}
+```
 
 ---
 
 ## Theming
 
-Pass a `theme` prop to `<SignalProvider>` to override any colors:
+Pass a partial theme to `SignalProvider` to override colors per type:
 
 ```tsx
 <SignalProvider
   theme={{
     success: {
       background: '#052e16',
-      border: '#16a34a80',
-      titleColor: '#bbf7d0',
-      messageColor: '#86efac',
+      border: '#22c55e60',
+      titleColor: '#ffffff',
+      descriptionColor: '#bbf7d0',
       iconColor: '#4ade80',
     },
-    error: {
-      background: '#450a0a',
-      border: '#dc262680',
-      titleColor: '#fecaca',
-      messageColor: '#f87171',
-      iconColor: '#ef4444',
-    },
-    // warning and info use defaults
   }}
 >
+  <App />
+</SignalProvider>
 ```
 
-### `SignalTypeTheme` shape
+Each type accepts a `SignalTypeTheme`:
 
 ```ts
 interface SignalTypeTheme {
-  background: string; // toast card background
-  border: string; // 1px border (use alpha, e.g. '#22c55e40')
+  background: string;
+  border: string;
   titleColor: string;
-  messageColor: string;
-  iconColor: string; // circular icon badge color
+  descriptionColor: string;
+  iconColor: string;
 }
 ```
 
 ---
 
-## Advanced examples
+## Requirements
 
-### Persistent toast (manual dismiss)
-
-```ts
-const id = Signal.show({
-  message: 'Downloading update…',
-  type: 'info',
-  autoHide: false,
-  swipeable: false,
-});
-
-// Later:
-Signal.hide(id);
-```
-
-### Update a toast in place
-
-```ts
-const id = Signal.info('Uploading…', { autoHide: false });
-
-await upload(file, (progress) => {
-  Signal.update(id, { message: `Uploading… ${progress}%` });
-});
-
-Signal.update(id, {
-  message: 'Upload complete!',
-  type: 'success',
-  autoHide: true,
-});
-```
-
-### Action on tap
-
-```ts
-Signal.show({
-  type: 'error',
-  title: 'No connection',
-  message: 'Tap to retry',
-  autoHide: false,
-  onPress: (dismiss) => {
-    dismiss();
-    retry();
-  },
-});
-```
-
-### Bottom toast
-
-```ts
-Signal.warning('Battery low', {
-  position: 'bottom',
-  duration: 4000,
-});
-```
-
----
-
-## Architecture notes
-
-```
-src/
-├── core/
-│   └── store.ts          # Singleton SignalStore — holds visible signals
-├── components/
-│   └── SignalItem.tsx     # Animated toast card (Reanimated v4)
-├── provider/
-│   └── SignalProvider.tsx # Renders top/bottom stacks, subscribes to store
-├── hooks/
-│   └── useSignal.ts       # Thin React hook over the store
-├── constants.ts
-├── types.ts
-└── index.ts
-```
-
-**Why a singleton store instead of Context?**  
-Context re-renders every subscriber on every signal change. The singleton emits to a single `useState` setter in `SignalProvider`, keeping the render tree minimal and enabling the imperative `Signal.*` API to work without a hook.
-
----
-
-## Troubleshooting
-
-| Symptom                                 | Fix                                                                                                       |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Toasts appear behind modals             | Ensure `SignalProvider` is inside `GestureHandlerRootView` but its children include your navigation stack |
-| Swipe gesture conflicts with navigation | Wrap the gesture with `Gesture.Simultaneous()` or adjust `activeOffsetX` on the pan                       |
-| Toast clips behind status bar           | Make sure `SafeAreaProvider` is an ancestor of `SignalProvider`                                           |
-| Animation stutters on Android           | Ensure Reanimated's Babel plugin is in your `babel.config.js`                                             |
+| Package                          | Version    |
+| -------------------------------- | ---------- |
+| `react-native`                   | `>= 0.74`  |
+| `react-native-reanimated`        | `>= 4.0.0` |
+| `react-native-worklets`          | `>= 0.4.0` |
+| `react-native-gesture-handler`   | `>= 2.0.0` |
+| `react-native-safe-area-context` | `>= 4.0.0` |
 
 ---
 
 ## License
 
-MIT
+MIT © 2026

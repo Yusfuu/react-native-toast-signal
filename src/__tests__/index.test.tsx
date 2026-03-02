@@ -34,7 +34,6 @@ describe('Signal.show', () => {
     expect(s.position).toBe('top');
     expect(s.autoHide).toBe(true);
     expect(s.swipeToDismiss).toBe(true);
-    expect(s.haptic).toBe(true);
   });
 });
 

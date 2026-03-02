@@ -51,10 +51,6 @@ export interface SignalOptions {
    * @example icon={<MyIcon size={16} />}
    */
   icon?: ReactNode;
-  /**
-   * Trigger haptic feedback on show (requires expo-haptics). Default: true.
-   */
-  haptic?: boolean;
 }
 
 export interface SignalItemProps {

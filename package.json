@@ -43,7 +43,12 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "toast",
+    "notification",
+    "snackbar",
+    "reanimated",
+    "gesture-handler"
   ],
   "repository": {
     "type": "git",
