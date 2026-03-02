@@ -4,7 +4,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/npm/v/react-native-toast-signal?style=flat-square&color=22c55e&labelColor=0d0d1a&label=npm" alt="npm version"/>
-  <img src="https://img.shields.io/npm/dm/react-native-toast-signal?style=flat-square&color=3b82f6&labelColor=0d0d1a" alt="downloads"/>
   <img src="https://img.shields.io/badge/Reanimated-v4-8b5cf6?style=flat-square&labelColor=0d0d1a" alt="reanimated v4"/>
   <img src="https://img.shields.io/badge/TypeScript-strict-3b82f6?style=flat-square&labelColor=0d0d1a" alt="typescript"/>
   <img src="https://img.shields.io/badge/license-MIT-f59e0b?style=flat-square&labelColor=0d0d1a" alt="license"/>
